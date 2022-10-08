@@ -1,4 +1,4 @@
-﻿namespace EmployeeService.Models
+﻿namespace EmployeeService.Data
 {
     /// <summary>
     /// Тип рабочего
