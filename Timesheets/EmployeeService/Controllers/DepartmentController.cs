@@ -1,7 +1,10 @@
-﻿using EmployeeService.Models;
+﻿using EmployeeService.Data;
+using EmployeeService.Models.Dto;
+using EmployeeService.Models.Options;
 using EmployeeService.Models.Requests.Department;
 using EmployeeService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace EmployeeService.Controllers
 {
@@ -10,48 +13,69 @@ namespace EmployeeService.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IOptions<LoggerOptions> _loggerOptions;
+        private readonly ILogger<DepartmentController> _logger;
 
         public DepartmentController(
-            IDepartmentRepository departmentRepository)
+            IDepartmentRepository departmentRepository,
+            IOptions<LoggerOptions> loggerOptions,
+            ILogger<DepartmentController> logger)
         {
+            _loggerOptions = loggerOptions;
             _departmentRepository = departmentRepository;
-        }
-
-        [HttpGet("all")]
-        public IActionResult GetAllDepartments()
-        {
-            return Ok(_departmentRepository.GetAll());
+            _logger = logger;
         }
 
         [HttpPost("add")]
-        public IActionResult AddDepartment(CreateDepartmentRequest department)
+        public ActionResult AddDepartment(CreateDepartmentRequest department)
         {
+            _logger.LogInformation("Department add");
             return Ok(_departmentRepository.Create(new Department
             {
                 Description = department.Description,
                 Id = department.Id
             }));
+        }
+
+        [HttpGet("all")]
+        public ActionResult<List<DepartmentDto>> GetAllDepartments()
+        {
+            _logger.LogInformation("Departments transferred");
+            return Ok(_departmentRepository.GetAll().Select(department=> new DepartmentDto
+            {
+                Id = department.Id,
+                Description = department.Description
+            }).ToList());
         }
 
         [HttpPut("update")]
-        public IActionResult UpdateDepartment(UpdateDepartmentRequest department)
+        public ActionResult UpdateDepartment(UpdateDepartmentRequest department)
         {
-            return Ok(_departmentRepository.Create(new Department
+            _logger.LogInformation("Departments updated");
+            _departmentRepository.Update(new Department
             {
                 Description = department.Description,
                 Id = department.Id
-            }));
+            });
+            return Ok();
         }
 
         [HttpGet("getById")]
-        public IActionResult GetById(Guid id)
+        public ActionResult<DepartmentDto> GetById(Guid id)
         {
-            return Ok(_departmentRepository.GetById(id));
+            _logger.LogInformation("Department transferred");
+            var department = _departmentRepository.GetById(id);
+            return Ok(new DepartmentDto
+            {
+                Id=department.Id,
+                Description = department.Description
+            });
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete(Guid id)
+        public ActionResult Delete(Guid id)
         {
+            _logger.LogInformation("Department deleted");
             _departmentRepository.Delete(id);
             return Ok();
         }
