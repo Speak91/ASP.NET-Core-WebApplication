@@ -5,29 +5,49 @@ namespace EmployeeService.Services.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        int IRepository<Department, Guid>.Create(Department data)
+        private readonly EmployeeServiceDbContext _context;
+
+        public DepartmentRepository(EmployeeServiceDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        void IRepository<Department, Guid>.Delete(Guid id)
+        public Guid Create(Department data)
         {
-            throw new NotImplementedException();
+            _context.Departments.Add(data);
+            _context.SaveChanges();
+            return data.Id;
         }
 
-        IList<Department> IRepository<Department, Guid>.GetAll()
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            Department department  = GetById(id);
+            if (department == null)
+            {
+                throw new Exception("departmentNotFound");
+            }
+            _context.Departments.Remove(department);
+            _context.SaveChanges();
         }
 
-        Department IRepository<Department, Guid>.GetById(Guid id)
+        public IList<Department> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Departments.ToList();
         }
 
-        void IRepository<Department, Guid>.Update(Department data)
+        public Department GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Departments.FirstOrDefault(e => e.Id == id);
+        }
+
+        public void Update(Department data)
+        {
+            if (data == null)
+                throw new Exception("Department is Null");
+            Department department = GetById(data.Id);
+
+            department.Description = data.Description;
+            _context.SaveChanges();
         }
     }
 }

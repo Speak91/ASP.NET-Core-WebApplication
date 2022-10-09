@@ -6,7 +6,7 @@
 
         T GetById(TId id);
 
-        int Create(T data);
+        TId Create(T data);
 
         void Update(T data);
 

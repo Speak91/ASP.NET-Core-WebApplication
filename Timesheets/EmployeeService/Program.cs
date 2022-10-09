@@ -1,7 +1,9 @@
+using EmployeeService.Data;
 using EmployeeService.Models.Options;
 using EmployeeService.Services;
 using EmployeeService.Services.Repository;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 
 namespace EmployeeService
@@ -34,6 +36,10 @@ namespace EmployeeService
 
             }).UseNLog(new NLogAspNetCoreOptions() { RemoveLoggerFactoryFilter = true });
 
+            builder.Services.AddDbContext<EmployeeServiceDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration["Settings:DatabaseOptions:ConnectionString"]);
+            });
 
             // Add services to the container.
             builder.Services.AddScoped<EmployeeRepository>();

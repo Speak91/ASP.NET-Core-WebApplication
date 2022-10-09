@@ -32,8 +32,7 @@ namespace EmployeeService.Controllers
             _logger.LogInformation("Department add");
             return Ok(_departmentRepository.Create(new Department
             {
-                Description = department.Description,
-                Id = department.Id
+                Description = department.Description
             }));
         }
 
