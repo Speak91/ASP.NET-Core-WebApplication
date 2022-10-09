@@ -5,29 +5,49 @@ namespace EmployeeService.Services.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        int IRepository<Employee, int>.Create(Employee data)
+        private readonly EmployeeServiceDbContext _context;
+
+        public EmployeeRepository(EmployeeServiceDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        void IRepository<Employee, int>.Delete(int id)
+        public int Create(Employee data)
         {
-            throw new NotImplementedException();
+            _context.Employees.Add(data);
+            _context.SaveChanges();
+            return data.Id;
         }
 
-        IList<Employee> IRepository<Employee, int>.GetAll()
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Employee employee = GetById(id);
+            if (employee == null)
+            {
+                throw new Exception("EmployeeType");
+            }
+            _context.Employees.Remove(employee);
+            _context.SaveChanges();
         }
 
-        Employee IRepository<Employee, int>.GetById(int id)
+        public IList<Employee> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Employees.ToList();
         }
 
-        void IRepository<Employee, int>.Update(Employee data)
+        public Employee GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Employees.FirstOrDefault(e => e.Id == id);
+        }
+
+        public void Update(Employee data)
+        {
+            if (data == null)
+                throw new Exception("EmployeesType is Null");
+            Employee employee = GetById(data.Id);
+
+            employee = data;
+            _context.SaveChanges();
         }
     }
 }

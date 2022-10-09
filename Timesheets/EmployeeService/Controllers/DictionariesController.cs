@@ -30,8 +30,7 @@ namespace EmployeeService.Controllers
             _logger.LogInformation("EmployeeType added");
             return Ok(_employeeTypeRepository.Create(new EmployeeType
             {
-                Id = employeeType.Id,
-                Descritption = employeeType.Descritption
+                Description = employeeType.Descritption
             }));
         }
 
@@ -42,7 +41,7 @@ namespace EmployeeService.Controllers
             return Ok(_employeeTypeRepository.Create(new EmployeeType
             {
                 Id = employeeType.Id,
-                Descritption = employeeType.Descritption
+                Description = employeeType.Descritption
             }));
         }
 
@@ -53,7 +52,7 @@ namespace EmployeeService.Controllers
             return Ok(_employeeTypeRepository.GetAll().Select(employeeType => new EmployeeTypeDto
             {
                 Id = employeeType.Id,
-                Descritption = employeeType.Descritption
+                Descritption = employeeType.Description
             }));
         }
 
@@ -65,7 +64,7 @@ namespace EmployeeService.Controllers
             return Ok(new EmployeeTypeDto
             {
                 Id = employeeType.Id,
-                Descritption = employeeType.Descritption
+                Descritption = employeeType.Description
             });
         }
 

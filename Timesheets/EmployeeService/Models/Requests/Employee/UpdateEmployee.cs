@@ -2,8 +2,8 @@
 {
     public class UpdateEmployee
     {
-        public int Id { get; set; }
-        public int DepartmentId { get; set; }
+        public Guid Id { get; set; }
+        public Guid DepartmentId { get; set; }
         public int EmployeeTypeId { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }

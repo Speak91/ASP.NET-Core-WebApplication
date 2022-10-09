@@ -2,7 +2,7 @@
 {
     public class CreateEmployeeType
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Descritption { get; set; }
     }
 }
