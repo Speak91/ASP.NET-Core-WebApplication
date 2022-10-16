@@ -4,12 +4,14 @@ using EmployeeService.Models.Dto;
 using EmployeeService.Models.Options;
 using EmployeeService.Models.Requests.Employee;
 using EmployeeService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace EmployeeService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
