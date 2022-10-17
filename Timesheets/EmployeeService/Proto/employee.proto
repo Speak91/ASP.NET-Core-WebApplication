@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+option csharp_namespace = "EmployeeServiceProto";
+package EmployeeServiceProto;
+
+service DictionariesService{
+	rpc CreateEmployeeType(CreateEmployeeTypeRequest) returns(CreateEmployeeTypeResponse);
+	rpc GetAllEmployeeTypes(GetAllEmployeeTypesRequest) returns(GetAllEmployeeTypesResponse);
+	rpc DeletedEmployeeType(DeletedEmployeeTypeRequest) returns(DeletedEmployeeTypeResponse);
+	rpc GetEmployeeTypeById(GetEmployeeTypeByIdRequest) returns (GetEmployeeTypeByIdResponse);
+	rpc UpdateEmployeeType(UpdateEmployeeTypeRequest) returns(UpdateEmployeeTypeResponse);
+}
+
+service DepartmentService{
+	rpc AddDepartment(AddDepartmentRequest) returns(AddDepartmentResponse);
+	rpc GetAllDepartments(GetAllDepartmentsRequest) returns(GetAllDepartmentsResponse);
+	rpc UpdateDepartment(UpdateDepartmentRequest) returns(UpdateDepartmentResponse);
+	rpc DeleteDepartment(DeleteDepartmentRequest) returns(DeleteDepartmentResponse);
+}
+
+
+message CreateEmployeeTypeRequest{
+	string description =1;
+}
+
+message CreateEmployeeTypeResponse{
+	int32 id = 1;
+}
+
+message GetAllEmployeeTypesRequest{
+}
+
+message GetAllEmployeeTypesResponse{
+	repeated EmployeeType employeeTypes = 1;
+}
+
+message EmployeeType{
+	int32 id = 1;
+	string description = 2;
+}
+
+message DeletedEmployeeTypeRequest{
+	int32 id = 1;
+}
+
+message DeletedEmployeeTypeResponse{
+}
+
+message GetEmployeeTypeByIdRequest{
+	int32 id = 1;
+}
+
+message GetEmployeeTypeByIdResponse{
+	int32 id = 1;
+	string description = 2;
+}
+
+message UpdateEmployeeTypeRequest{
+	int32 id = 1;
+	string description = 2;
+}
+
+message UpdateEmployeeTypeResponse{
+}
+
+message AddDepartmentRequest{
+	string description = 1;
+}
+
+message AddDepartmentResponse{
+string id =1;
+}
+
+message GetAllDepartmentsRequest{
+}
+
+message GetAllDepartmentsResponse{
+	repeated DepartmentDto departmentDto = 1;
+}
+
+message DepartmentDto{
+	string id = 1;
+	string description = 2;
+}
+
+message DeleteDepartmentRequest{
+	string id = 1;
+}
+
+message DeleteDepartmentResponse{
+}
+
+message UpdateDepartmentRequest{
+	string id = 1;
+	string description = 2;
+}
+
+message UpdateDepartmentResponse{
+
+}
