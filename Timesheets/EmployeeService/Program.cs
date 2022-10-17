@@ -20,7 +20,17 @@ namespace EmployeeService
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Listen(System.Net.IPAddress.Any, 5001, listenOptions =>
+                {
+                    listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+                    listenOptions.UseHttps(@"C:\1.pfx", "1");
+                });
+            });
 
+            builder.Services.AddGrpc();
             #region Configure Options
 
             builder.Services.Configure<LoggerOptions>(options =>
@@ -137,10 +147,21 @@ namespace EmployeeService
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseHttpLogging();
-
+            //app.UseHttpLogging();
+            app.UseWhen( //Т.к есть проблема логгирования при Grpc то мы не можем пока логгировать qRPC
+               ctx => ctx.Request.ContentType != "application/grpc",
+               builder =>
+               {
+                   builder.UseHttpLogging();
+               }
+               );
             app.MapControllers();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<DictionariesService>();
+                endpoints.MapGrpcService<DepartmentService>();
+            });
             app.Run();
         }
     }
